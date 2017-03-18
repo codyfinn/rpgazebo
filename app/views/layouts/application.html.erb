@@ -9,6 +9,14 @@
   </head>
 
   <body>
-    <%= yield %>
+    <%= nav_bar brand: "RPGazebo", responsive: true do %>
+	<%= menu_group do %>
+            <%= menu_item "Home", root_path%>
+            <%= menu_item "About", static_pages_about_path %>
+	<% end %>      
+    <% end %>
+    <div class="container">
+	<%= yield %>
+    </div>
   </body>
 </html>
