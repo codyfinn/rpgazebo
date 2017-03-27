@@ -92,6 +92,7 @@ GEM
       actionpack (>= 3.2.13)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
+    high_voltage (3.0.0)
     i18n (0.8.1)
     jbuilder (2.6.3)
       activesupport (>= 3.0.0, < 5.2)
@@ -271,6 +272,7 @@ DEPENDENCIES
   flog
   flutie
   formtastic
+  high_voltage (~> 3.0.0)
   jbuilder (~> 2.5)
   jquery-rails
   listen (~> 3.0.5)

@@ -12,8 +12,8 @@
   <body>
     <%= nav_bar brand: "RPGazebo", responsive: true do %>
 	<%= menu_group do %>
-            <%= menu_item "Home", root_path%>
-            <%= menu_item "About", static_pages_about_path %>
+            <%= menu_item "Home", root_path %>
+            <%= menu_item "About", page_path('about') %>
 	<% end %>
     <% end %>
     <div class="container">
