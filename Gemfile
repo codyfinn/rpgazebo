@@ -8,20 +8,23 @@ git_source(:github) do |repo_name|
 end
 
 gem "autoprefixer-rails"
+gem "bcrypt"
+gem "coffee-rails", "~> 4.2"
 gem "flutie"
 gem "formtastic"
-gem "title"
-gem "twitter-bootstrap-rails"
-gem "coffee-rails", "~> 4.2"
 gem "high_voltage", "~> 3.0.0"
 gem "jbuilder", "~> 2.5"
 gem "jquery-rails"
+gem "omniauth-google-oauth2"
+gem "omniauth-identity"
 gem "pg", "~> 0.18"
 gem "puma", "~> 3.0"
 gem "rails", "~> 5.0.2"
 gem "sass-rails", "~> 5.0"
 gem "therubyracer", platforms: :ruby
+gem "title"
 gem "turbolinks", "~> 5"
+gem "twitter-bootstrap-rails"
 gem "uglifier", ">= 1.3.0"
 
 group :development do

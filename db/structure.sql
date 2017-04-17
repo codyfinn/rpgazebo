@@ -81,6 +81,37 @@ ALTER SEQUENCE character_attributes_id_seq OWNED BY character_attributes.id;
 
 
 --
+-- Name: characters; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE characters (
+    id integer NOT NULL,
+    character_name character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: characters_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE characters_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: characters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE characters_id_seq OWNED BY characters.id;
+
+
+--
 -- Name: feats; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -121,7 +152,8 @@ CREATE TABLE games (
     name character varying,
     description text,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    user_id integer
 );
 
 
@@ -142,6 +174,42 @@ CREATE SEQUENCE games_id_seq
 --
 
 ALTER SEQUENCE games_id_seq OWNED BY games.id;
+
+
+--
+-- Name: identities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE identities (
+    id integer NOT NULL,
+    email text NOT NULL,
+    name text NOT NULL,
+    password_digest text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    CONSTRAINT check_constraint_email CHECK ((length(email) <= 256)),
+    CONSTRAINT check_constraint_name CHECK ((length(name) <= 64)),
+    CONSTRAINT check_constraint_password_digest CHECK ((length(password_digest) <= 128))
+);
+
+
+--
+-- Name: identities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE identities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: identities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE identities_id_seq OWNED BY identities.id;
 
 
 --
@@ -218,10 +286,53 @@ ALTER SEQUENCE skills_id_seq OWNED BY skills.id;
 
 
 --
+-- Name: users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    name text NOT NULL,
+    provider text NOT NULL,
+    uid text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    CONSTRAINT check_constraint_name CHECK ((length(name) <= 64)),
+    CONSTRAINT check_constraint_provider CHECK ((length(provider) <= 64)),
+    CONSTRAINT check_constraint_uid CHECK ((length(uid) <= 512))
+);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE users_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
 -- Name: character_attributes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY character_attributes ALTER COLUMN id SET DEFAULT nextval('character_attributes_id_seq'::regclass);
+
+
+--
+-- Name: characters id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY characters ALTER COLUMN id SET DEFAULT nextval('characters_id_seq'::regclass);
 
 
 --
@@ -239,6 +350,13 @@ ALTER TABLE ONLY games ALTER COLUMN id SET DEFAULT nextval('games_id_seq'::regcl
 
 
 --
+-- Name: identities id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY identities ALTER COLUMN id SET DEFAULT nextval('identities_id_seq'::regclass);
+
+
+--
 -- Name: rule_sets id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -250,6 +368,13 @@ ALTER TABLE ONLY rule_sets ALTER COLUMN id SET DEFAULT nextval('rule_sets_id_seq
 --
 
 ALTER TABLE ONLY skills ALTER COLUMN id SET DEFAULT nextval('skills_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
 --
@@ -269,6 +394,14 @@ ALTER TABLE ONLY character_attributes
 
 
 --
+-- Name: characters characters_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY characters
+    ADD CONSTRAINT characters_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: feats feats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -282,6 +415,14 @@ ALTER TABLE ONLY feats
 
 ALTER TABLE ONLY games
     ADD CONSTRAINT games_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: identities identities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY identities
+    ADD CONSTRAINT identities_pkey PRIMARY KEY (id);
 
 
 --
@@ -309,6 +450,35 @@ ALTER TABLE ONLY skills
 
 
 --
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_games_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_games_on_user_id ON games USING btree (user_id);
+
+
+--
+-- Name: index_identities_on_email; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_identities_on_email ON identities USING btree (email);
+
+
+--
+-- Name: index_users_on_provider_and_uid; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_provider_and_uid ON users USING btree (provider, uid);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -325,6 +495,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170407183008'),
 ('20170414180451'),
 ('20170414180919'),
-('20170414185559');
+('20170414185559'),
+('20170414204008'),
+('20170416224609'),
+('20170416232402'),
+('20170417002052');
 
 
