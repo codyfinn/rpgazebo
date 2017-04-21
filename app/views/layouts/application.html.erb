@@ -16,6 +16,18 @@
               <%= menu_item "Home", root_path %>
               <%= menu_item "About", page_path('about') %>
 	  <% end %>
+
+	  <%= menu_group do %>
+	      <%= drop_down "CURD" do %>
+		  <%= menu_item "Games", games_path%>
+		  <%= menu_item "Characters", characters_path%>
+		  <%= menu_item "Character Attributes", character_attributes_path%>
+		  <%= menu_item "Attributes", attributes_path%>
+		  <%= menu_item "Rule Sets", rule_sets_path%>
+		  <%= menu_item "Skills", skills_path%>
+	      <% end %>	      
+	      <%= %>
+	  <% end %>
 	  
 	  <%= menu_group pull: :right do %>	   
 	      <%= drop_down current_user ? current_user.name : "Login" do %>
