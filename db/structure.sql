@@ -81,38 +81,6 @@ ALTER SEQUENCE attributes_id_seq OWNED BY attributes.id;
 
 
 --
--- Name: character_atrributes; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE character_atrributes (
-    id integer NOT NULL,
-    value integer,
-    modifier integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: character_atrributes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE character_atrributes_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: character_atrributes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE character_atrributes_id_seq OWNED BY character_atrributes.id;
-
-
---
 -- Name: character_attributes; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -394,13 +362,6 @@ ALTER TABLE ONLY attributes ALTER COLUMN id SET DEFAULT nextval('attributes_id_s
 
 
 --
--- Name: character_atrributes id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY character_atrributes ALTER COLUMN id SET DEFAULT nextval('character_atrributes_id_seq'::regclass);
-
-
---
 -- Name: character_attributes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -470,14 +431,6 @@ ALTER TABLE ONLY ar_internal_metadata
 
 ALTER TABLE ONLY attributes
     ADD CONSTRAINT attributes_pkey PRIMARY KEY (id);
-
-
---
--- Name: character_atrributes character_atrributes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY character_atrributes
-    ADD CONSTRAINT character_atrributes_pkey PRIMARY KEY (id);
 
 
 --
@@ -587,7 +540,11 @@ CREATE UNIQUE INDEX index_users_on_provider_and_uid ON users USING btree (provid
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20170331181627'),
+('20170407174629'),
 ('20170407174943'),
+('20170407175518'),
+('20170407181808'),
 ('20170407182105'),
 ('20170407182351'),
 ('20170407183008'),
@@ -601,7 +558,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170421081055'),
 ('20170421082711'),
 ('20170421083226'),
-('20170421084732'),
 ('20170421090009'),
 ('20170421114943');
 
