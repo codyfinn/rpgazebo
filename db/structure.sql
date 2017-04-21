@@ -81,6 +81,70 @@ ALTER SEQUENCE attributes_id_seq OWNED BY attributes.id;
 
 
 --
+-- Name: character_atrributes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE character_atrributes (
+    id integer NOT NULL,
+    value integer,
+    modifier integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: character_atrributes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE character_atrributes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: character_atrributes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE character_atrributes_id_seq OWNED BY character_atrributes.id;
+
+
+--
+-- Name: character_attributes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE character_attributes (
+    id integer NOT NULL,
+    value integer,
+    modifier integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: character_attributes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE character_attributes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: character_attributes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE character_attributes_id_seq OWNED BY character_attributes.id;
+
+
+--
 -- Name: characters; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -329,6 +393,20 @@ ALTER TABLE ONLY attributes ALTER COLUMN id SET DEFAULT nextval('attributes_id_s
 
 
 --
+-- Name: character_atrributes id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY character_atrributes ALTER COLUMN id SET DEFAULT nextval('character_atrributes_id_seq'::regclass);
+
+
+--
+-- Name: character_attributes id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY character_attributes ALTER COLUMN id SET DEFAULT nextval('character_attributes_id_seq'::regclass);
+
+
+--
 -- Name: characters id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -391,6 +469,22 @@ ALTER TABLE ONLY ar_internal_metadata
 
 ALTER TABLE ONLY attributes
     ADD CONSTRAINT attributes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: character_atrributes character_atrributes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY character_atrributes
+    ADD CONSTRAINT character_atrributes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: character_attributes character_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY character_attributes
+    ADD CONSTRAINT character_attributes_pkey PRIMARY KEY (id);
 
 
 --
@@ -498,6 +592,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170417002052'),
 ('20170421081055'),
 ('20170421082711'),
-('20170421083226');
+('20170421083226'),
+('20170421084732'),
+('20170421090009');
 
 
