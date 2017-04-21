@@ -1,4 +1,4 @@
-<%- model_class = CharacterAttribute -%>
+<%- model_class = Attribute -%>
 <div class="page-header">
   <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
 </div>
@@ -7,29 +7,29 @@
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:description) %></th>
       <th><%= model_class.human_attribute_name(:min) %></th>
       <th><%= model_class.human_attribute_name(:max) %></th>
-      <th><%= model_class.human_attribute_name(:description) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
-    <% @character_attributes.each do |character_attribute| %>
+    <% @attributes.each do |attribute| %>
       <tr>
-        <td><%= link_to character_attribute.id, character_attribute_path(character_attribute) %></td>
-        <td><%= character_attribute.name %></td>
-        <td><%= character_attribute.min %></td>
-	<td><%= character_attribute.max %></td>
-        <td><%= character_attribute.description %></td>
-        <td><%=l character_attribute.created_at %></td>
+        <td><%= link_to attribute.id, attribute_path(attribute) %></td>
+        <td><%= attribute.name %></td>
+        <td><%= attribute.description %></td>
+        <td><%= attribute.min %></td>
+        <td><%= attribute.max %></td>
+        <td><%=l attribute.created_at %></td>
         <td>
           <%= link_to t('.show', :default => t("helpers.links.show")),
-                      character_attribute_path(character_attribute), :class => 'btn btn-default btn-xs' %>
+                      attribute_path(attribute), :class => 'btn btn-default btn-xs' %>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_character_attribute_path(character_attribute), :class => 'btn btn-default btn-xs' %>
+                      edit_attribute_path(attribute), :class => 'btn btn-default btn-xs' %>
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      character_attribute_path(character_attribute),
+                      attribute_path(attribute),
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-xs btn-danger' %>
@@ -40,5 +40,5 @@
 </table>
 
 <%= link_to t('.new', :default => t("helpers.links.new")),
-            new_character_attribute_path,
+            new_attribute_path,
             :class => 'btn btn-primary' %>

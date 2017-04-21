@@ -47,25 +47,25 @@ CREATE TABLE ar_internal_metadata (
 
 
 --
--- Name: character_attributes; Type: TABLE; Schema: public; Owner: -
+-- Name: attributes; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE character_attributes (
+CREATE TABLE attributes (
     id integer NOT NULL,
-    name character varying,
-    description character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
+    name text,
+    description text,
     min integer,
-    max integer
+    max integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: character_attributes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: attributes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE character_attributes_id_seq
+CREATE SEQUENCE attributes_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -74,10 +74,10 @@ CREATE SEQUENCE character_attributes_id_seq
 
 
 --
--- Name: character_attributes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: attributes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE character_attributes_id_seq OWNED BY character_attributes.id;
+ALTER SEQUENCE attributes_id_seq OWNED BY attributes.id;
 
 
 --
@@ -322,10 +322,10 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
--- Name: character_attributes id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: attributes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY character_attributes ALTER COLUMN id SET DEFAULT nextval('character_attributes_id_seq'::regclass);
+ALTER TABLE ONLY attributes ALTER COLUMN id SET DEFAULT nextval('attributes_id_seq'::regclass);
 
 
 --
@@ -386,11 +386,11 @@ ALTER TABLE ONLY ar_internal_metadata
 
 
 --
--- Name: character_attributes character_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: attributes attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY character_attributes
-    ADD CONSTRAINT character_attributes_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY attributes
+    ADD CONSTRAINT attributes_pkey PRIMARY KEY (id);
 
 
 --
@@ -485,11 +485,7 @@ CREATE UNIQUE INDEX index_users_on_provider_and_uid ON users USING btree (provid
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20170331181627'),
-('20170407174629'),
 ('20170407174943'),
-('20170407175518'),
-('20170407181808'),
 ('20170407182105'),
 ('20170407182351'),
 ('20170407183008'),
@@ -499,6 +495,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170414204008'),
 ('20170416224609'),
 ('20170416232402'),
-('20170417002052');
+('20170417002052'),
+('20170421081055'),
+('20170421082711'),
+('20170421083226');
 
 
