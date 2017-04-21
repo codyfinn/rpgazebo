@@ -285,7 +285,8 @@ CREATE TABLE rule_sets (
     name character varying,
     description character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    user_id integer
 );
 
 
@@ -566,6 +567,13 @@ CREATE UNIQUE INDEX index_identities_on_email ON identities USING btree (email);
 
 
 --
+-- Name: index_rule_sets_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_rule_sets_on_user_id ON rule_sets USING btree (user_id);
+
+
+--
 -- Name: index_users_on_provider_and_uid; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -594,6 +602,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170421082711'),
 ('20170421083226'),
 ('20170421084732'),
-('20170421090009');
+('20170421090009'),
+('20170421114943');
 
 

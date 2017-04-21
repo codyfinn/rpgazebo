@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :attributes
   match "/auth/:provider/callback", to: "sessions#create", via: [:get, :post]
   match "/auth/failure", to: "sessions#failure", via: [:get, :post]
+  match "/logout", to: "sessions#destory", via: [:get, :post], :as => :logout
 
   resources :characters
   resources :feats

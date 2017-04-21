@@ -10,10 +10,20 @@
   </head>
 
   <body>
-    <%= nav_bar brand: "RPGazebo", responsive: true do %>
-	<%= menu_group do %>
-            <%= menu_item "Home", root_path %>
-            <%= menu_item "About", page_path('about') %>
+      <%= nav_bar brand: "RPGazebo", responsive: true do %>
+	  <%= menu_group do %>
+              <%= menu_item "Home", root_path %>
+              <%= menu_item "About", page_path('about') %>
+	  <% end %>
+	  
+	  <%= menu_group pull: :right do %>	   
+	      <%= drop_down current_user ? current_user.name : "Login" do %>
+		  <% if current_user %>
+		      <%= menu_item "Logout", logout_path %>
+		  <% else %>
+		      <%= menu_item "Login", new_session_path %>
+		  <% end %>		  
+	      <% end %>	      
 	<% end %>
     <% end %>
     <div class="container">

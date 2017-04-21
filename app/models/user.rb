@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_many :games
+  has_many :rule_sets
   
   def self.from_omniauth(auth:)
     find_by(provider: auth["provider"], uid: auth["uid"]) || create_with_omniauth(auth: auth)
