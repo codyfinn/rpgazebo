@@ -120,7 +120,8 @@ CREATE TABLE characters (
     id integer NOT NULL,
     character_name character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    game_id integer
 );
 
 
@@ -141,6 +142,38 @@ CREATE SEQUENCE characters_id_seq
 --
 
 ALTER SEQUENCE characters_id_seq OWNED BY characters.id;
+
+
+--
+-- Name: encounters; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE encounters (
+    id integer NOT NULL,
+    name text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    game_id integer
+);
+
+
+--
+-- Name: encounters_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE encounters_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: encounters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE encounters_id_seq OWNED BY encounters.id;
 
 
 --
@@ -181,7 +214,7 @@ ALTER SEQUENCE feats_id_seq OWNED BY feats.id;
 
 CREATE TABLE games (
     id integer NOT NULL,
-    name character varying,
+    name character varying NOT NULL,
     description text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -245,12 +278,46 @@ ALTER SEQUENCE identities_id_seq OWNED BY identities.id;
 
 
 --
+-- Name: notes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE notes (
+    id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    name text NOT NULL,
+    body text,
+    CONSTRAINT check_constraint_body CHECK ((length(body) <= 4096)),
+    CONSTRAINT check_constraint_name CHECK ((length(name) <= 64))
+);
+
+
+--
+-- Name: notes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE notes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: notes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE notes_id_seq OWNED BY notes.id;
+
+
+--
 -- Name: rule_sets; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE rule_sets (
     id integer NOT NULL,
-    name character varying,
+    name character varying NOT NULL,
     description character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -376,6 +443,13 @@ ALTER TABLE ONLY characters ALTER COLUMN id SET DEFAULT nextval('characters_id_s
 
 
 --
+-- Name: encounters id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY encounters ALTER COLUMN id SET DEFAULT nextval('encounters_id_seq'::regclass);
+
+
+--
 -- Name: feats id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -394,6 +468,13 @@ ALTER TABLE ONLY games ALTER COLUMN id SET DEFAULT nextval('games_id_seq'::regcl
 --
 
 ALTER TABLE ONLY identities ALTER COLUMN id SET DEFAULT nextval('identities_id_seq'::regclass);
+
+
+--
+-- Name: notes id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY notes ALTER COLUMN id SET DEFAULT nextval('notes_id_seq'::regclass);
 
 
 --
@@ -450,6 +531,14 @@ ALTER TABLE ONLY characters
 
 
 --
+-- Name: encounters encounters_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY encounters
+    ADD CONSTRAINT encounters_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: feats feats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -471,6 +560,14 @@ ALTER TABLE ONLY games
 
 ALTER TABLE ONLY identities
     ADD CONSTRAINT identities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: notes notes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY notes
+    ADD CONSTRAINT notes_pkey PRIMARY KEY (id);
 
 
 --
@@ -503,6 +600,20 @@ ALTER TABLE ONLY skills
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_characters_on_game_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_characters_on_game_id ON characters USING btree (game_id);
+
+
+--
+-- Name: index_encounters_on_game_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_encounters_on_game_id ON encounters USING btree (game_id);
 
 
 --
@@ -540,14 +651,7 @@ CREATE UNIQUE INDEX index_users_on_provider_and_uid ON users USING btree (provid
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20170331181627'),
-('20170407174629'),
 ('20170407174943'),
-('20170407175518'),
-('20170407181808'),
-('20170407182105'),
-('20170407182351'),
-('20170407183008'),
 ('20170414180451'),
 ('20170414180919'),
 ('20170414185559'),
@@ -555,10 +659,15 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170416224609'),
 ('20170416232402'),
 ('20170417002052'),
-('20170421081055'),
-('20170421082711'),
 ('20170421083226'),
 ('20170421090009'),
-('20170421114943');
+('20170421114943'),
+('20170424172055'),
+('20170424172700'),
+('20170424173548'),
+('20170424175127'),
+('20170430190147'),
+('20170430190155'),
+('20170430193934');
 
 

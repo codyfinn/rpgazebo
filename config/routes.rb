@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :encounters
+  resources :notes
   resources :character_attributes
   resources :character_atrributes
   resources :attributes
