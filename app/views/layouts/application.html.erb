@@ -15,28 +15,18 @@
 	  <%= menu_group do %>
               <%= menu_item "Home", root_path %>
               <%= menu_item "About", page_path('about') %>
+              <%= menu_item "Rule Sets", rule_sets_path %>
+              <%= menu_item "Games", games_path %>
 	  <% end %>
 
-	  <%= menu_group do %>
-	      <%= drop_down "CURD" do %>
-		  <%= menu_item "Games", games_path%>
-		  <%= menu_item "Characters", characters_path%>
-		  <%= menu_item "Character Attributes", character_attributes_path%>
-		  <%= menu_item "Attributes", attributes_path%>
-		  <%= menu_item "Rule Sets", rule_sets_path%>
-		  <%= menu_item "Skills", skills_path%>
-	      <% end %>	      
-	      <%= %>
-	  <% end %>
-	  
-	  <%= menu_group pull: :right do %>	   
+	  <%= menu_group pull: :right do %>
 	      <%= drop_down current_user ? current_user.name : "Login" do %>
 		  <% if current_user %>
 		      <%= menu_item "Logout", logout_path %>
 		  <% else %>
 		      <%= menu_item "Login", new_session_path %>
-		  <% end %>		  
-	      <% end %>	      
+		  <% end %>
+	      <% end %>
 	<% end %>
     <% end %>
     <div class="container">

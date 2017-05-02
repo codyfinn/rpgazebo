@@ -1,6 +1,7 @@
 FactoryGirl.define do
   factory :feat do
-    feat_name "MyString"
+    name "MyText"
     description "MyText"
+    rule_set nil
   end
 end

@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
   def create
     user = User.from_omniauth(auth: env["omniauth.auth"])
     session[:user_id] = user.id  
-    redirect_to root_url, notice: "Signed In!"  
+    redirect_to games_url, notice: "Signed In!"
   end
 
   def destory

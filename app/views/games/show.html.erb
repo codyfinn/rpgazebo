@@ -8,14 +8,61 @@
   <dd><%= @game.name %></dd>
   <dt><strong><%= model_class.human_attribute_name(:description) %>:</strong></dt>
   <dd><%= @game.description %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:rule_set_id) %>:</strong></dt>
+  <dd><%= @game.rule_set_id %></dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),
-              games_path, :class => 'btn btn-default'  %>
+    games_path, :class => 'btn btn-default'  %>
 <%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_game_path(@game), :class => 'btn btn-default' %>
+    edit_game_path(@game), :class => 'btn btn-default' %>
 <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              game_path(@game),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>
+    game_path(@game),
+    :method => 'delete',
+    :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+	:class => 'btn btn-danger' %>
+
+<h2>Encounters</h2>
+<table class="table table-striped">
+    <thead>
+	<tr>
+	    <th><%= model_class.human_attribute_name(:id) %></th>
+	    <th><%= model_class.human_attribute_name(:name) %></th>
+	    <th><%= model_class.human_attribute_name(:experience_points) %></th>
+	    <th><%= model_class.human_attribute_name(:description) %></th>
+	    <th><%= model_class.human_attribute_name(:game_id) %></th>
+	    <th><%= model_class.human_attribute_name(:created_at) %></th>
+	    <th><%=t '.actions', :default => t("helpers.actions") %></th>
+	</tr>
+    </thead>
+    <tbody>
+	<%= render partial: "encounters/encounter", collection: @game.encounters, as: :encounter %>
+    </tbody>
+</table>
+
+<%= link_to t('.new', :default => t("helpers.links.new")),
+    new_game_encounter_path(@game),
+    :class => 'btn btn-primary' %>
+	
+<h2>Characters</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>      
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:bio) %></th>
+      <th><%= model_class.human_attribute_name(:level) %></th>
+      <th><%= model_class.human_attribute_name(:hit_points) %></th>
+      <th><%= model_class.human_attribute_name(:game_id) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
+    </tr>
+  </thead>
+  <tbody>
+  <%= render partial: "characters/character", collection: @game.characters, as: :character %>
+  </tbody>
+</table>
+
+<%= link_to t('.new', :default => t("helpers.links.new")),
+    new_game_character_path(@game),
+    :class => 'btn btn-primary' %>
+

@@ -1,0 +1,19 @@
+<tr>
+    <td><%= link_to encounter.id, game_encounter_path(encounter) %></td>
+    <td><%= encounter.name %></td>
+    <td><%= encounter.experience_points %></td>
+    <td><%= encounter.description %></td>
+    <td><%= link_to encounter.game.name, game_path(encounter.game_id) %></td>
+    <td><%=l encounter.created_at %></td>
+    <td>
+	<%= link_to t('.show', :default => t("helpers.links.show")),
+            game_encounter_path(encounter), :class => 'btn btn-default btn-xs' %>
+	<%= link_to t('.edit', :default => t("helpers.links.edit")),
+            edit_game_encounter_path(encounter), :class => 'btn btn-default btn-xs' %>            
+	<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+            game_encounter_path(encounter),
+            :method => :delete,
+            :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+		:class => 'btn btn-xs btn-danger' %>
+    </td>
+</tr>

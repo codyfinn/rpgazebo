@@ -1,6 +1,8 @@
 FactoryGirl.define do
   factory :character_attribute do
-    value 1
-    modifier 1
+    ability_score 1
+    ability_modifier 1
+    character nil
+    attribute nil
   end
 end

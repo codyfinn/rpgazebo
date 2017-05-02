@@ -1,18 +1,22 @@
 Rails.application.routes.draw do
-  resources :encounters
-  resources :notes
-  resources :character_attributes
+  resources :items
+  resources :spells
+  resources :feats
+  resources :base_attributes
+  resources :characters, only: [:show, :index]
+  resources :encounters, only: [:show, :index]
+  resources :games do 
+    resources :characters
+    resources :encounters
+  end
+  match "/games/:game_id/encounters/new", to: "encounters#create", via: [:post]
+  match "/games/:game_id/characters/new", to: "characters#create", via: [:post]
+  resources :rule_sets
   resources :character_atrributes
-  resources :attributes
   match "/auth/:provider/callback", to: "sessions#create", via: [:get, :post]
   match "/auth/failure", to: "sessions#failure", via: [:get, :post]
   match "/logout", to: "sessions#destory", via: [:get, :post], :as => :logout
 
-  resources :characters
-  resources :feats
-  resources :games
   resources :identities
-  resources :rule_sets
-  resources :skills
   resources :sessions, on: [:new, :create, :destory]
 end

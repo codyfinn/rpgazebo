@@ -24,11 +24,11 @@ class EncountersController < ApplicationController
   # POST /encounters
   # POST /encounters.json
   def create
-    @encounter = Encounter.new(encounter_params)
+    @encounter = Game.find_by(id: params[:game_id]).encounters.build(encounter_params)
 
     respond_to do |format|
       if @encounter.save
-        format.html { redirect_to @encounter, notice: 'Encounter was successfully created.' }
+        format.html { redirect_to game_encounter_path(id: @encounter.id), notice: 'Encounter was successfully created.' }
         format.json { render :show, status: :created, location: @encounter }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class EncountersController < ApplicationController
   def update
     respond_to do |format|
       if @encounter.update(encounter_params)
-        format.html { redirect_to @encounter, notice: 'Encounter was successfully updated.' }
+        format.html { redirect_to game_encounter_path(id: @encounter.id), notice: 'Encounter was successfully updated.' }
         format.json { render :show, status: :ok, location: @encounter }
       else
         format.html { render :edit }
@@ -56,7 +56,7 @@ class EncountersController < ApplicationController
   def destroy
     @encounter.destroy
     respond_to do |format|
-      format.html { redirect_to encounters_url, notice: 'Encounter was successfully destroyed.' }
+      format.html { redirect_to game_encounters_url, notice: 'Encounter was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -69,6 +69,6 @@ class EncountersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def encounter_params
-      params.require(:encounter).permit(:name)
+      params.require(:encounter).permit(:name, :experience_points, :description, :game_id)
     end
 end

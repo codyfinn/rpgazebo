@@ -8,6 +8,7 @@
       <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:name) %></th>
       <th><%= model_class.human_attribute_name(:description) %></th>
+      <th><%= model_class.human_attribute_name(:user_id) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -18,6 +19,7 @@
         <td><%= link_to rule_set.id, rule_set_path(rule_set) %></td>
         <td><%= rule_set.name %></td>
         <td><%= rule_set.description %></td>
+        <td><%= rule_set.user.name %></td>
         <td><%=l rule_set.created_at %></td>
         <td>
           <%= link_to t('.show', :default => t("helpers.links.show")),

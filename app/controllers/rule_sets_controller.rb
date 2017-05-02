@@ -24,7 +24,7 @@ class RuleSetsController < ApplicationController
   # POST /rule_sets
   # POST /rule_sets.json
   def create
-    @rule_set = RuleSet.new(rule_set_params)
+    @rule_set = current_user.rule_sets.build(rule_set_params)
 
     respond_to do |format|
       if @rule_set.save

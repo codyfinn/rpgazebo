@@ -6,7 +6,11 @@
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>
-      <th><%= model_class.human_attribute_name(:character_name) %></th>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:bio) %></th>
+      <th><%= model_class.human_attribute_name(:level) %></th>
+      <th><%= model_class.human_attribute_name(:hit_points) %></th>
+      <th><%= model_class.human_attribute_name(:game_id) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -15,15 +19,19 @@
     <% @characters.each do |character| %>
       <tr>
         <td><%= link_to character.id, character_path(character) %></td>
-        <td><%= character.character_name %></td>
+        <td><%= character.name %></td>
+        <td><%= character.bio %></td>
+        <td><%= character.level %></td>
+        <td><%= character.hit_points %></td>
+        <td><%= character.game_id %></td>
         <td><%=l character.created_at %></td>
         <td>
           <%= link_to t('.show', :default => t("helpers.links.show")),
                       character_path(character), :class => 'btn btn-default btn-xs' %>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_character_path(character), :class => 'btn btn-default btn-xs' %>
+                      edit_game_character_path(id: character.id, game_id: character.game_id), :class => 'btn btn-default btn-xs' %>
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-                      character_path(character),
+                      game_character_path(id: character.id, game_id: character.game_id),
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-xs btn-danger' %>
@@ -32,7 +40,3 @@
     <% end %>
   </tbody>
 </table>
-
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_character_path,
-            :class => 'btn btn-primary' %>

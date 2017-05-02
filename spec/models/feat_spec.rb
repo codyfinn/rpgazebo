@@ -1,5 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Feat, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  describe "structure" do
+    it { is_expected.to have_db_column(:name).with_options(null: false) }
+    it { is_expected.to have_db_column(:description) }
+  end
+
+  describe "associations" do
+    it { is_expected.to belong_to(:rule_set) }
+  end
 end

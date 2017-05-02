@@ -7,8 +7,8 @@ RSpec.describe Game, type: :model do
   end
 
   describe "associations" do
+    it { is_expected.to belong_to(:rule_set) }
     it { is_expected.to belong_to(:user) }
-    it { is_expected.to have_many(:characters) }
-    it { is_expected.to have_many(:encounters) }    
-  end  
+    it { is_expected.to have_many(:encounters) }
+  end
 end

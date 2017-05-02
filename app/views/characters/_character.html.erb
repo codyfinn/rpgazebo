@@ -1,0 +1,19 @@
+<tr>
+    <td><%= character.name %></td>
+    <td><%= character.bio %></td>
+    <td><%= character.level %></td>
+    <td><%= character.hit_points %></td>
+    <td><%= link_to character.game.name, game_path(character.game) %></td>
+	<td><%=l character.created_at %></td>
+    <td>
+      <%= link_to t('.show', :default => t("helpers.links.show")),
+                  character_path(character), :class => 'btn btn-default btn-xs' %>
+      <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                  edit_game_character_path(character), :class => 'btn btn-default btn-xs' %>
+      <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                  game_character_path(character),
+                  :method => :delete,
+                  :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                  :class => 'btn btn-xs btn-danger' %>
+    </td>
+</tr>

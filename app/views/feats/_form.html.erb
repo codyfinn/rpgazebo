@@ -16,11 +16,11 @@
   <% end %>
 
   <div class="form-group">
-    <%= f.label :feat_name, :class => 'control-label col-lg-2' %>
+    <%= f.label :name, :class => 'control-label col-lg-2' %>
     <div class="col-lg-10">
-      <%= f.text_field :feat_name, :class => 'form-control' %>
+      <%= f.text_field :name, :class => 'form-control' %>
     </div>
-    <%=f.error_span(:feat_name) %>
+    <%=f.error_span(:name) %>
   </div>
   <div class="form-group">
     <%= f.label :description, :class => 'control-label col-lg-2' %>
@@ -28,6 +28,13 @@
       <%= f.text_field :description, :class => 'form-control' %>
     </div>
     <%=f.error_span(:description) %>
+  </div>
+  <div class="form-group">
+    <%= f.label :rule_set_id, :class => 'control-label col-lg-2' %>
+    <div class="col-lg-10">
+      <%= collection_select(:feat, :rule_set_id, current_user.rule_sets , :id, :name, {}, {:class => "form-control"}) %>
+    </div>
+    <%=f.error_span(:rule_set_id) %>
   </div>
 
   <div class="form-group">

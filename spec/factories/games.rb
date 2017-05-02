@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :game do
-    name "MyString"
+    name "MyText"
     description "MyText"
   end
 end

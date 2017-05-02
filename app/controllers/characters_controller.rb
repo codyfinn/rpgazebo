@@ -14,7 +14,7 @@ class CharactersController < ApplicationController
 
   # GET /characters/new
   def new
-    @character = Character.new
+    @character = Game.find_by(id: params[:game_id]).characters.new
   end
 
   # GET /characters/1/edit
@@ -24,8 +24,7 @@ class CharactersController < ApplicationController
   # POST /characters
   # POST /characters.json
   def create
-    @game = Game.find(params[:game_id])
-    @character = Character.new(character_params)
+    @character = Game.find_by(id: params[:game_id]).characters.build(character_params)
 
     respond_to do |format|
       if @character.save
@@ -57,7 +56,7 @@ class CharactersController < ApplicationController
   def destroy
     @character.destroy
     respond_to do |format|
-      format.html { redirect_to characters_url, notice: 'Character was successfully destroyed.' }
+      format.html { redirect_to game_characters_url, notice: 'Character was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -70,6 +69,6 @@ class CharactersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def character_params
-      params.require(:character).permit(:character_name, :body)
+      params.require(:character).permit(:name, :bio, :level, :hit_points, :game_id, character_attributes_attributes: [:id, :base_attribute_id, :ability_score, :ability_modifier, :_destroy])
     end
 end

@@ -24,7 +24,7 @@ class FeatsController < ApplicationController
   # POST /feats
   # POST /feats.json
   def create
-    @feat = Feat.new(feat_params)
+    @feat = RuleSet.find_by(id: params[:feat][:rule_set_id]).feats.build(feat_params)
 
     respond_to do |format|
       if @feat.save
@@ -69,6 +69,6 @@ class FeatsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def feat_params
-      params.require(:feat).permit(:feat_name, :description)
+      params.require(:feat).permit(:name, :description, :rule_set_id)
     end
 end

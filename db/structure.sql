@@ -47,25 +47,24 @@ CREATE TABLE ar_internal_metadata (
 
 
 --
--- Name: attributes; Type: TABLE; Schema: public; Owner: -
+-- Name: base_attributes; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE attributes (
+CREATE TABLE base_attributes (
     id integer NOT NULL,
-    name text,
+    name text NOT NULL,
     description text,
-    min integer,
-    max integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    rule_set_id integer
 );
 
 
 --
--- Name: attributes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: base_attributes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE attributes_id_seq
+CREATE SEQUENCE base_attributes_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -74,10 +73,10 @@ CREATE SEQUENCE attributes_id_seq
 
 
 --
--- Name: attributes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: base_attributes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE attributes_id_seq OWNED BY attributes.id;
+ALTER SEQUENCE base_attributes_id_seq OWNED BY base_attributes.id;
 
 
 --
@@ -86,8 +85,10 @@ ALTER SEQUENCE attributes_id_seq OWNED BY attributes.id;
 
 CREATE TABLE character_attributes (
     id integer NOT NULL,
-    value integer,
-    modifier integer,
+    ability_score integer,
+    ability_modifier integer,
+    character_id integer,
+    base_attribute_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -118,10 +119,13 @@ ALTER SEQUENCE character_attributes_id_seq OWNED BY character_attributes.id;
 
 CREATE TABLE characters (
     id integer NOT NULL,
-    character_name character varying,
+    name text,
+    bio text,
+    level integer,
+    hit_points integer,
+    game_id integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    game_id integer
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -151,9 +155,11 @@ ALTER SEQUENCE characters_id_seq OWNED BY characters.id;
 CREATE TABLE encounters (
     id integer NOT NULL,
     name text NOT NULL,
+    experience_points integer,
+    description text,
+    game_id integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    game_id integer
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -182,8 +188,9 @@ ALTER SEQUENCE encounters_id_seq OWNED BY encounters.id;
 
 CREATE TABLE feats (
     id integer NOT NULL,
-    feat_name character varying,
+    name text NOT NULL,
     description text,
+    rule_set_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -214,11 +221,11 @@ ALTER SEQUENCE feats_id_seq OWNED BY feats.id;
 
 CREATE TABLE games (
     id integer NOT NULL,
-    name character varying NOT NULL,
+    name text NOT NULL,
     description text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    user_id integer
+    rule_set_id integer
 );
 
 
@@ -278,25 +285,25 @@ ALTER SEQUENCE identities_id_seq OWNED BY identities.id;
 
 
 --
--- Name: notes; Type: TABLE; Schema: public; Owner: -
+-- Name: items; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE notes (
+CREATE TABLE items (
     id integer NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
     name text NOT NULL,
-    body text,
-    CONSTRAINT check_constraint_body CHECK ((length(body) <= 4096)),
-    CONSTRAINT check_constraint_name CHECK ((length(name) <= 64))
+    price integer,
+    description text,
+    rule_set_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: notes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE notes_id_seq
+CREATE SEQUENCE items_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -305,10 +312,10 @@ CREATE SEQUENCE notes_id_seq
 
 
 --
--- Name: notes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE notes_id_seq OWNED BY notes.id;
+ALTER SEQUENCE items_id_seq OWNED BY items.id;
 
 
 --
@@ -317,8 +324,8 @@ ALTER SEQUENCE notes_id_seq OWNED BY notes.id;
 
 CREATE TABLE rule_sets (
     id integer NOT NULL,
-    name character varying NOT NULL,
-    description character varying,
+    name text NOT NULL,
+    description text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     user_id integer
@@ -354,23 +361,24 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: skills; Type: TABLE; Schema: public; Owner: -
+-- Name: spells; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE skills (
+CREATE TABLE spells (
     id integer NOT NULL,
-    skill_name character varying,
+    name text NOT NULL,
     description text,
+    rule_set_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: skills_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: spells_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE skills_id_seq
+CREATE SEQUENCE spells_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -379,10 +387,10 @@ CREATE SEQUENCE skills_id_seq
 
 
 --
--- Name: skills_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: spells_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE skills_id_seq OWNED BY skills.id;
+ALTER SEQUENCE spells_id_seq OWNED BY spells.id;
 
 
 --
@@ -422,10 +430,10 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
--- Name: attributes id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: base_attributes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY attributes ALTER COLUMN id SET DEFAULT nextval('attributes_id_seq'::regclass);
+ALTER TABLE ONLY base_attributes ALTER COLUMN id SET DEFAULT nextval('base_attributes_id_seq'::regclass);
 
 
 --
@@ -471,10 +479,10 @@ ALTER TABLE ONLY identities ALTER COLUMN id SET DEFAULT nextval('identities_id_s
 
 
 --
--- Name: notes id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: items id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY notes ALTER COLUMN id SET DEFAULT nextval('notes_id_seq'::regclass);
+ALTER TABLE ONLY items ALTER COLUMN id SET DEFAULT nextval('items_id_seq'::regclass);
 
 
 --
@@ -485,10 +493,10 @@ ALTER TABLE ONLY rule_sets ALTER COLUMN id SET DEFAULT nextval('rule_sets_id_seq
 
 
 --
--- Name: skills id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: spells id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY skills ALTER COLUMN id SET DEFAULT nextval('skills_id_seq'::regclass);
+ALTER TABLE ONLY spells ALTER COLUMN id SET DEFAULT nextval('spells_id_seq'::regclass);
 
 
 --
@@ -507,11 +515,11 @@ ALTER TABLE ONLY ar_internal_metadata
 
 
 --
--- Name: attributes attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: base_attributes base_attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY attributes
-    ADD CONSTRAINT attributes_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY base_attributes
+    ADD CONSTRAINT base_attributes_pkey PRIMARY KEY (id);
 
 
 --
@@ -563,11 +571,11 @@ ALTER TABLE ONLY identities
 
 
 --
--- Name: notes notes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: items items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY notes
-    ADD CONSTRAINT notes_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY items
+    ADD CONSTRAINT items_pkey PRIMARY KEY (id);
 
 
 --
@@ -587,11 +595,11 @@ ALTER TABLE ONLY schema_migrations
 
 
 --
--- Name: skills skills_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: spells spells_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY skills
-    ADD CONSTRAINT skills_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY spells
+    ADD CONSTRAINT spells_pkey PRIMARY KEY (id);
 
 
 --
@@ -600,6 +608,27 @@ ALTER TABLE ONLY skills
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_base_attributes_on_rule_set_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_base_attributes_on_rule_set_id ON base_attributes USING btree (rule_set_id);
+
+
+--
+-- Name: index_character_attributes_on_base_attribute_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_character_attributes_on_base_attribute_id ON character_attributes USING btree (base_attribute_id);
+
+
+--
+-- Name: index_character_attributes_on_character_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_character_attributes_on_character_id ON character_attributes USING btree (character_id);
 
 
 --
@@ -617,10 +646,17 @@ CREATE INDEX index_encounters_on_game_id ON encounters USING btree (game_id);
 
 
 --
--- Name: index_games_on_user_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_feats_on_rule_set_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_games_on_user_id ON games USING btree (user_id);
+CREATE INDEX index_feats_on_rule_set_id ON feats USING btree (rule_set_id);
+
+
+--
+-- Name: index_games_on_rule_set_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_games_on_rule_set_id ON games USING btree (rule_set_id);
 
 
 --
@@ -631,6 +667,13 @@ CREATE UNIQUE INDEX index_identities_on_email ON identities USING btree (email);
 
 
 --
+-- Name: index_items_on_rule_set_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_items_on_rule_set_id ON items USING btree (rule_set_id);
+
+
+--
 -- Name: index_rule_sets_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -638,10 +681,97 @@ CREATE INDEX index_rule_sets_on_user_id ON rule_sets USING btree (user_id);
 
 
 --
+-- Name: index_spells_on_rule_set_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_spells_on_rule_set_id ON spells USING btree (rule_set_id);
+
+
+--
 -- Name: index_users_on_provider_and_uid; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_users_on_provider_and_uid ON users USING btree (provider, uid);
+
+
+--
+-- Name: spells fk_rails_5104854a2b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY spells
+    ADD CONSTRAINT fk_rails_5104854a2b FOREIGN KEY (rule_set_id) REFERENCES rule_sets(id);
+
+
+--
+-- Name: base_attributes fk_rails_58efff06ac; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY base_attributes
+    ADD CONSTRAINT fk_rails_58efff06ac FOREIGN KEY (rule_set_id) REFERENCES rule_sets(id);
+
+
+--
+-- Name: games fk_rails_5d893fac18; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY games
+    ADD CONSTRAINT fk_rails_5d893fac18 FOREIGN KEY (rule_set_id) REFERENCES rule_sets(id);
+
+
+--
+-- Name: character_attributes fk_rails_753d0ec414; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY character_attributes
+    ADD CONSTRAINT fk_rails_753d0ec414 FOREIGN KEY (base_attribute_id) REFERENCES base_attributes(id);
+
+
+--
+-- Name: encounters fk_rails_7ab1a49024; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY encounters
+    ADD CONSTRAINT fk_rails_7ab1a49024 FOREIGN KEY (game_id) REFERENCES games(id);
+
+
+--
+-- Name: feats fk_rails_7c5784029b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY feats
+    ADD CONSTRAINT fk_rails_7c5784029b FOREIGN KEY (rule_set_id) REFERENCES rule_sets(id);
+
+
+--
+-- Name: character_attributes fk_rails_8937f39d59; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY character_attributes
+    ADD CONSTRAINT fk_rails_8937f39d59 FOREIGN KEY (character_id) REFERENCES characters(id);
+
+
+--
+-- Name: characters fk_rails_d6c1172f1f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY characters
+    ADD CONSTRAINT fk_rails_d6c1172f1f FOREIGN KEY (game_id) REFERENCES games(id);
+
+
+--
+-- Name: items fk_rails_f516303bc0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY items
+    ADD CONSTRAINT fk_rails_f516303bc0 FOREIGN KEY (rule_set_id) REFERENCES rule_sets(id);
+
+
+--
+-- Name: rule_sets fk_rails_f9b148baa2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY rule_sets
+    ADD CONSTRAINT fk_rails_f9b148baa2 FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 --
@@ -668,6 +798,23 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170424175127'),
 ('20170430190147'),
 ('20170430190155'),
-('20170430193934');
+('20170430193934'),
+('20170430235728'),
+('20170430235923'),
+('20170501003925'),
+('20170501004014'),
+('20170501013933'),
+('20170501015054'),
+('20170501022454'),
+('20170501025015'),
+('20170501030316'),
+('20170501032454'),
+('20170501034353'),
+('20170501034906'),
+('20170501040239'),
+('20170501042105'),
+('20170501193433'),
+('20170501234558'),
+('20170501234903');
 
 
